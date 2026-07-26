@@ -7,4 +7,4 @@
   :tier :t1
   :role :library
   :must-not [:compile :lower-to-KIR :decide-capability-policy]
-  :depends-on []}}
+  :depends-on ["kotoba-lang/kotoba-core-contracts"]}}
