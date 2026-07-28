@@ -26,6 +26,7 @@
          :forbidden-heads #{}
          :diagnostic-hints {}
          :string-head-host-ops #{}
+         :data-head-host-ops #{}
          :core-special-forms #{}
          :arithmetic #{}
          :comparisons #{}
@@ -50,6 +51,15 @@
 (defn string-head-host-ops
   []
   (as-sym-set (:string-head-host-ops (catalog) #{})))
+
+(defn data-head-host-ops
+  "Host-import families whose first argument is structured data rather than
+  text. A constant collection literal there lowers to (bytes-ptr V)
+  (bytes-len V) over canonical kotoba.value.v1 bytes -- the same (ptr,len)
+  ABI, typed payload (ADR-kotoba-canonical-value-codec, VC5). Adds no call
+  head, so the strict-grammar admission set is unaffected."
+  []
+  (as-sym-set (:data-head-host-ops (catalog) #{})))
 
 (defn diagnostic-hint
   [head]
