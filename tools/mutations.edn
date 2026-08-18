@@ -1,0 +1,96 @@
+;; One mutation per invariant. `:find` must occur EXACTLY ONCE in `:file`.
+;;
+;; ## SCOPE
+;;
+;; Covers the 2026-08-18 `.clj` → `.cljc` conversion ONLY: that the catalog is
+;; compiled in rather than read at runtime, that the generated projection
+;; cannot drift from the EDN a human edits without something going red, and
+;; that an unavailable live host-import surface propagates as nil instead of
+;; collapsing to `#{}` — which would turn every capability call in a guest
+;; module into a reported grammar violation.
+;;
+;; It does NOT cover the grammar walk itself, the sugar/arithmetic/predicate
+;; admission sets, or the diagnostic hints. Those have assertions above and no
+;; mutations here, so a clean run means "the portability invariants are
+;; measured" and NOT "this library is measured".
+;;
+;; ⚠ RUN THE TABLE TWICE. `MUTATE_CMD` picks the suite:
+;;
+;;   nbb tools/mutate.cljs
+;;   CC=~/.gitlibs/libs/io.github.kotoba-lang/kotoba-core-contracts/<sha>/src \
+;;   MUTATE_CMD="nbb --classpath src:test:$CC test/run_portable.cljs" \
+;;     nbb tools/mutate.cljs
+;;
+;; `:the-projection-cannot-drift-unnoticed` is guarded by a `#?(:clj …)` test
+;; — the drift check belongs to the runtime that has the checkout — so it is a
+;; guaranteed SURVIVOR under nbb. That is the harness's blind spot being
+;; reported rather than hidden, and it is why both runs are recorded.
+
+[;; ⚠ RETARGETED-AND-KEPT, both forms. The first mutation below changes the
+ ;; profile-version, and under nbb it was killed by
+ ;; `callable-contract-profile-is-bounded-and-abi-neutral` — a test that pins
+ ;; that exact number for its own reasons — and NOT by the drift check, which
+ ;; is `#?(:clj …)`. A kill by the wrong test is not evidence about the check
+ ;; you meant to measure, so the second mutation touches a value NOTHING else
+ ;; pins (a forbidden head). It is killed on the JVM by the drift check alone
+ ;; and SURVIVES under nbb, which is the honest shape of the blind spot: with
+ ;; the catalog compiled in, the ClojureScript side has no EDN to compare
+ ;; against and cannot notice drift at all.
+ {:id :the-projection-cannot-drift-unnoticed
+  :invariant "the generated namespace matches the EDN a human edits"
+  :file "src/kotoba/grammar/embedded.cljc"
+  :find " :kotoba.lang.guest-grammar/profile-version 6"
+  :replace " :kotoba.lang.guest-grammar/profile-version 99"}
+
+ {:id :the-projection-cannot-drift-in-a-value-nothing-else-pins
+  :invariant "drift is caught by the drift check, not by luck"
+  :file "src/kotoba/grammar/embedded.cljc"
+  :find "locking dosync"
+  :replace "lockingDRIFTED dosync"}
+
+ {:id :the-catalog-is-the-embedded-one
+  :invariant "the library reads the projection and not something else"
+  :file "src/kotoba/grammar.cljc"
+  :find "  embedded/catalog)"
+  :replace "  {})"}
+
+ {:id :an-unavailable-contract-is-nil-not-empty
+  :invariant "nobody could look /= there are none"
+  :file "src/kotoba/grammar.cljc"
+  :find "   (when (some? contract)\n     (into #{} (keys"
+  :replace "   (when true\n     (into #{} (keys"}
+
+ {:id :unknown-host-ops-make-the-admission-set-unknown
+  :invariant "admitted-heads propagates nil rather than dropping 110 ops"
+  :file "src/kotoba/grammar.cljc"
+  :find "   (when (some? host-ops)\n     (let [c (catalog)"
+  :replace "   (when true\n     (let [c (catalog)"}
+
+ {:id :a-strict-check-that-could-not-run-does-not-report-violations
+  :invariant "no host surface yields :grammar-unavailable, not :unknown-form"
+  :file "src/kotoba/grammar.cljc"
+  :find "     (if (and strict? (nil? admitted))"
+  :replace "     (if (and strict? false)"}
+
+ {:id :host-ops-actually-reach-the-admission-set
+  :invariant "the live surface is unioned in, not silently dropped"
+  :file "src/kotoba/grammar.cljc"
+  :find "                     host-ops\n                     ;; with-variants of host ops"
+  :replace "                     nil\n                     ;; with-variants of host ops"}
+
+ {:id :forbidden-heads-come-from-the-catalog
+  :invariant "denied forms are denied on both runtimes, host surface or not"
+  :file "src/kotoba/grammar.cljc"
+  :find "  (as-sym-set (:forbidden-heads (catalog) #{})))"
+  :replace "  #{})"}
+
+ ;; A mutation was written and RETARGETED here, with its reason, because
+ ;; deleting one to tidy the table is what this harness exists to prevent:
+ ;;
+ ;;   renaming `catalog` to `catalog*` in src/kotoba/grammar.cljc scored
+ ;;   UNMEASURED rather than killed, and correctly: the rename broke every
+ ;;   caller, the namespace stopped loading, and a suite that cannot start has
+ ;;   not been shown to notice anything. The same misfire is on record in
+ ;;   kotoba-lang/iso3166. It is retargeted at `:the-catalog-is-the-embedded-one`
+ ;;   above, which changes a VALUE and leaves the namespace loadable.
+ ]
