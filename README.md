@@ -13,6 +13,7 @@ checkable from outside.
 - `kotoba.grammar (guest grammar gate)`
 - `resources/kotoba/lang/guest-grammar.edn (the grammar itself)`
 - `src/kotoba/grammar/embedded.cljc (GENERATED projection of it — do not edit)`
+- `syntaxes/kotoba.tmLanguage.json (GENERATED projection for editors and github-linguist — do not edit)`
 
 ## Does not own
 
@@ -46,6 +47,42 @@ call in a guest module as a grammar violation. Instead the ops are an explicit
 argument (`strict-problems` and `admitted-heads` both take them), and the
 no-argument forms answer nil off the JVM — a strict check with no host surface
 returns one `:grammar-unavailable` problem rather than a list of invented ones.
+
+## The TextMate projection
+
+`syntaxes/kotoba.tmLanguage.json` is the same catalog projected into the format
+editors and [github-linguist](https://github.com/github-linguist/linguist)
+read. Linguist requires a syntax grammar before GitHub can display Kotoba as a
+language at all; `script/add-grammar` points at this repository.
+
+```bash
+nbb tools/gen-tmlanguage.cljs           # after editing the EDN
+nbb tools/gen-tmlanguage.cljs --check   # gate: exit 1 stale, 2 cannot tell
+```
+
+It exists instead of aliasing `source.clojure` because Kotoba is Clojure-shaped
+and Clojure's grammar says the wrong thing about it. `(atom x)`, `(eval x)`,
+`(swap! …)` — the 31 heads in `:forbidden-heads` — are not ordinary calls the
+standard library happens to lack; they are the no-ambient-authority invariant,
+and the compiler fails closed on every one. This grammar scopes them
+`invalid.illegal.forbidden-head.kotoba`, so the refusal shows up in the editor
+before it shows up in a build.
+
+`the-textmate-grammar-covers-every-forbidden-head` in the suite gates that
+against the EDN with no dependencies. For a deeper check, `tools/verify-tmlanguage.cljs`
+tokenizes real `.kotoba` source through the same engine VS Code and Linguist
+use, and is a tool rather than a test so the library keeps its dependency-free
+suite:
+
+```bash
+npm i --no-save vscode-textmate vscode-oniguruma
+nbb tools/verify-tmlanguage.cljs path/to/*.kotoba
+```
+
+It earns the separation. An early generator escaped `-` and `/` as if they were
+metacharacters outside a character class: every pattern still compiled,
+`--check` still said FRESH, and every hyphenated head silently stopped
+matching. Only tokenizing real source found it.
 
 ## Test
 

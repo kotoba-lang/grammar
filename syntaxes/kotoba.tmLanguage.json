@@ -1,0 +1,69 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Kotoba",
+  "scopeName": "source.kotoba",
+  "fileTypes": [
+    "kotoba"
+  ],
+  "patterns": [
+    {
+      "name": "comment.line.semicolon.kotoba",
+      "match": ";.*$"
+    },
+    {
+      "name": "string.quoted.double.kotoba",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.kotoba",
+          "match": "\\\\."
+        }
+      ]
+    },
+    {
+      "name": "constant.numeric.kotoba",
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])[-+]?(?:0[xX][0-9a-fA-F]+|[0-9]+(?:\\.[0-9]+)?(?:[eE][-+]?[0-9]+)?)(?![^\\s()\\[\\]{}\",;'`@^~])"
+    },
+    {
+      "name": "constant.language.kotoba",
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:true|false|nil)(?![^\\s()\\[\\]{}\",;'`@^~])"
+    },
+    {
+      "name": "constant.other.keyword.kotoba",
+      "match": "::?[a-zA-Z0-9*+!_'?<>=/.-]+"
+    },
+    {
+      "name": "invalid.illegal.forbidden-head.kotoba",
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:alter-var-root|ns-resolve|load-file|volatile!|defmacro|send-off|binding|locking|require|resolve|dosync|future|import|reset!|agent|catch|swap!|throw|atom|eval|load|pmap|send|set!|new|ref|try|use|var|\\.\\.|\\.)(?![^\\s()\\[\\]{}\",;'`@^~])"
+    },
+    {
+      "name": "keyword.control.kotoba",
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:extend-protocol|definterface|defprotocol|extend-type|defrecord|defn|main|def|let|do|if|ns)(?![^\\s()\\[\\]{}\",;'`@^~])"
+    },
+    {
+      "name": "keyword.control.sugar.kotoba",
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:portable-string-symbol-values|typed-capability-call|nested-destructuring|inline-fn-callback|interface-contract|record-constructor|protocol-dispatch|extend-protocol|keyword-literal|string-host-arg|vector-literal|data-host-arg|facet-enter!|facet-leave!|extend-type|lazy-empty\\?|lazy-filter|map-literal|set-literal|defdesugar|lazy-first|loop-recur|contains\\?|defmethod|lazy-cons|lazy-rest|option-or|when-some|defmulti|document|lazy-map|observe!|retract!|when-let|when-not|assert!|cond->>|dotimes|if-some|some->>|assert|dissoc|filter|fn-ref|if-let|if-not|invoke|reduce|some->|apply|assoc|bytes|condp|count|doseq|match|as->|case|cond|conj|disj|drop|keys|not=|peek|take|vals|when|->>|and|get|map|nth|pop|->|<=|>=|do|fn|or|<|=|>)(?![^\\s()\\[\\]{}\",;'`@^~])"
+    },
+    {
+      "name": "support.function.host-op.kotoba",
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:kami-move-tagged-toward!|kami-despawn-within!|tls-server-end-point|clipboard-write-str|kami-nearest-tagged|kgraph-get-objects|kami-count-tagged|transport-connect|cc-warc-extract|fs-write-atomic|kgraph-retract!|corpus-publish|keychain-write|kgraph-assert!|nearest-tagged|corpus-append|keychain-read|cc-cdx-query|count-tagged|kgraph-query|spawn-entity|audio-play|http-fetch|kami-spawn|play-sound|sha256-hex|http-post|kami-axis|llm-infer|log-write|fs-write|log-read|tls-open|fs-read|axis)(?![^\\s()\\[\\]{}\",;'`@^~])"
+    },
+    {
+      "name": "support.function.builtin.kotoba",
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:unsigned-bit-shift-right|host-i64-roundtrip|kernel-boot-info|string-substring|bit-shift-right|has-capability\\?|kernel-store-u8|bit-shift-left|kernel-load-u8|alloc-checked|call-indirect|result-status|result-write!|string-concat|string-length|memory-pages|result-value|byte-store!|cap-acquire|mem-byte-at|memory-grow|pair-second|result-err\\?|i32-store!|mem-i32-at|pair-first|result-ok\\?|bytes-len|bytes-ptr|keyword\\?|when-let|bit-and|bit-xor|byte-at|f32sqrt|i64ushr|str-len|str-ptr|string=|string\\?|symbol\\?|bit-or|empty\\?|f32div|f32neg|i64and|i64shl|i64shr|i64xor|if-let|second|symbol|alloc|f32<=|f32>=|first|i64or|zero\\?|case|cond|cons|f32\\*|f32\\+|f32-|f32/|f32<|f32=|f32>|i64\\*|i64\\+|i64-|list|neg\\?|not=|pair|pos\\?|quot|rest|->>|dec|f32|i64|inc|max|min|mod|not|rem|->|<=|>=|\\*|\\+|-|/|<|=|>)(?![^\\s()\\[\\]{}\",;'`@^~])"
+    },
+    {
+      "name": "entity.name.function.kotoba",
+      "match": "(?<=\\((?:defn|def|defrecord|defprotocol|definterface)\\s)[^\\s()\\[\\]{}]+"
+    },
+    {
+      "name": "punctuation.section.parens.kotoba",
+      "match": "[()\\[\\]{}]"
+    },
+    {
+      "name": "variable.other.symbol.kotoba",
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])[a-zA-Z*+!_'?<>=-][^\\s()\\[\\]{}\",;'`@^~]*"
+    }
+  ]
+}

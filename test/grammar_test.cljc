@@ -1,6 +1,7 @@
 (ns grammar-test
   (:require [clojure.test :refer [deftest is testing]]
             #?(:clj [clojure.edn :as edn])
+            [clojure.string :as str]
             [kotoba.grammar :as grammar]
             [kotoba.grammar.embedded :as embedded]))
 
@@ -109,3 +110,56 @@
                       {:kotoba.policy/strict-grammar false}
                       nil)]
         (is (= [:denied-form] (mapv :kotoba.runtime/problem problems)))))))
+
+;; ── the TextMate projection ────────────────────────────────────────────────
+
+#?(:clj
+   (deftest the-textmate-grammar-covers-every-forbidden-head
+     ;; `syntaxes/kotoba.tmLanguage.json` is the second generated projection of
+     ;; this catalog (after `embedded.cljc`), and the one github-linguist and
+     ;; editors read. Its whole reason to exist rather than aliasing
+     ;; `source.clojure` is that it renders `:forbidden-heads` as illegal, so
+     ;; that is what is asserted — against the EDN, not against a copy of the
+     ;; generator's expected output, which would only prove the generator
+     ;; agrees with itself.
+     ;;
+     ;; Not wrapped in try/nil, for the same reason as the embedded drift
+     ;; check: a run that could not read either file must fail here rather
+     ;; than report what a clean run reports.
+     (let [catalog (edn/read-string
+                    (slurp "resources/kotoba/lang/guest-grammar.edn"))
+           json    (slurp "syntaxes/kotoba.tmLanguage.json")
+           lines   (str/split-lines json)
+           ;; The generator pretty-prints each pattern as "name" then "match",
+           ;; on separate lines. Reading the name line and calling it the
+           ;; pattern is how the first version of this test passed nothing and
+           ;; failed everything — take the "match" line at or after the name.
+           illegal (let [i (first (keep-indexed
+                                   (fn [i l]
+                                     (when (str/includes?
+                                            l "invalid.illegal.forbidden-head.kotoba")
+                                       i))
+                                   lines))]
+                     (when i
+                       (first (filter #(str/includes? % "\"match\"")
+                                      (drop i lines)))))
+           ;; Heads carrying regex metacharacters (`.`, `..`, `has-capability?`)
+           ;; appear escaped in the pattern, so compare against the pattern with
+           ;; its backslashes removed rather than re-implementing the
+           ;; generator's escaping here — a second copy of that rule is exactly
+           ;; what this repo generates projections to avoid.
+           illegal (some-> illegal (str/replace "\\" ""))
+           heads   (map str (:forbidden-heads catalog))]
+       (is (seq heads)
+           "the catalog must actually carry forbidden heads")
+       (is (some? illegal)
+           "the grammar must scope something invalid.illegal — run: nbb tools/gen-tmlanguage.cljs")
+       ;; Guarded: with no pattern found the assertion above already names the
+       ;; reason, and 31 NullPointerExceptions on top of it would bury it.
+       (doseq [head (if illegal heads [])]
+         (is (.contains ^String illegal head)
+             (str "forbidden head " head " is not scoped invalid.illegal"
+                  " — run: nbb tools/gen-tmlanguage.cljs")))
+       (testing "and the grammar declares the scope Linguist will reference"
+         (is (.contains ^String json "\"scopeName\": \"source.kotoba\""))
+         (is (.contains ^String json "\"kotoba\""))))))
