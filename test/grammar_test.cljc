@@ -163,3 +163,49 @@
        (testing "and the grammar declares the scope Linguist will reference"
          (is (.contains ^String json "\"scopeName\": \"source.kotoba\""))
          (is (.contains ^String json "\"kotoba\""))))))
+
+;; ── :sugar entries keyed by feature rather than by head ────────────────────
+
+(deftest sugar-heads-expands-forms-instead-of-admitting-the-feature-name
+  ;; A `:sugar` entry is keyed either by a call head or by a FEATURE whose real
+  ;; heads live under `:forms`. Reading only the keys admitted the feature name
+  ;; — a symbol that cannot appear in source — and rejected the heads that can.
+  (testing "a feature entry contributes its :forms, not its key"
+    (is (= #{'defmulti 'defmethod}
+           (grammar/sugar-heads {:closed-multimethod {:forms '[defmulti defmethod]}}))))
+  (testing "an entry with no :forms contributes its key, which IS the head"
+    (is (= #{'when} (grammar/sugar-heads {:when {:desugars-to "if + optional do"}}))))
+  (testing ":forms written as prose describes a shape, so the key is kept"
+    (is (= #{'nested-destructuring}
+           (grammar/sugar-heads {:nested-destructuring {:forms ["nested vector/map"]}})))))
+
+(deftest the-admission-set-holds-real-heads-and-not-feature-names
+  (let [heads (grammar/admitted-heads #{})]
+    (testing "heads the compiler accepts and the catalog documents"
+      ;; Measured 2026-08-24 across kotoba-lang before the fix: loop and recur
+      ;; appear 57 times each in compiling .kotoba source and were rejected
+      ;; here. Two mechanisms for one named invariant, disagreeing.
+      (doseq [head '[loop recur defmulti defmethod
+                     assert! retract! observe! facet-enter! facet-leave!]]
+        (is (contains? heads head) (str head " must be admitted"))))
+    (testing "feature names, which cannot appear in source, are not heads"
+      ;; 0 occurrences between them across the corpus. Admitting them meant a
+      ;; typo'd `(loop-recur …)` would have passed the grammar gate.
+      (doseq [phantom '[loop-recur closed-multimethod dataspace
+                        protocol-extension variadic-comparison]]
+        (is (not (contains? heads phantom))
+            (str phantom " is a feature name, not a call head"))))
+    (testing "and widening the set did not admit anything forbidden"
+      (doseq [head (map #(symbol (name %)) (:forbidden-heads (grammar/catalog)))]
+        (is (not (contains? heads head))
+            (str head " is forbidden and must never be admitted"))))))
+
+(deftest strict-grammar-accepts-loop-recur-source
+  (testing "the shape that 57 real sources use"
+    (is (empty? (grammar/strict-problems
+                 '[(defn main [] (loop [i 0] (if (< i 3) (recur (+ i 1)) i)))]
+                 {} #{}))))
+  (testing "and the feature name is now the thing that fails"
+    (is (= "loop-recur"
+           (:kotoba.runtime/form
+            (first (grammar/strict-problems '[(defn main [] (loop-recur 1))] {} #{})))))))
