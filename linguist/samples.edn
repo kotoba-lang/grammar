@@ -1,0 +1,44 @@
+;; Samples for the github-linguist submission.
+;;
+;; Provenance, not copies. Linguist wants real-world sources committed into its
+;; own `samples/Kotoba/` directory, and a frozen duplicate kept here would be
+;; one more vendored copy aging on its own schedule -- the failure this repo
+;; family already knows by name. Each entry names the repo, path and commit to
+;; fetch from at submission time:
+;;
+;;   git -C <checkout> show <commit>:<path> > samples/Kotoba/<as>
+;;
+;; All four are Apache-2.0 and are production sources, not tutorial code --
+;; CONTRIBUTING.md: "'Hello world' and other examples found in tutorials will
+;; not be accepted." State the licence in the PR body.
+
+{:license "Apache-2.0"
+ :recorded "2026-08-24"
+ :samples
+ [{:as     "core.kotoba"
+   :repo   "kotoba-lang/kotoba-lang"
+   :path   "lang/stdlib/core.kotoba"
+   :commit "13d9a3771352"
+   :bytes  3249
+   :shows  "records, option/result, recursion over cons pairs -- the idiomatic core"}
+
+  {:as     "todo-app.kotoba"
+   :repo   "kotoba-lang/amu"
+   :path   "examples/todo-app.kotoba"
+   :commit "e8b1d91e2536"
+   :bytes  9988
+   :shows  "the init/view/step application profile end to end"}
+
+  {:as     "kami-survivors.kotoba"
+   :repo   "kotoba-lang/kotoba"
+   :path   "src/kami_survivors.kotoba"
+   :commit "9ed2e45c6681"
+   :bytes  3198
+   :shows  "capability calls against a host surface (kami-* string-head ops)"}
+
+  {:as     "pg-batch-consumer.kotoba"
+   :repo   "kotoba-lang/kotoba"
+   :path   "providers/pg_batch_consumer.kotoba"
+   :commit "9ed2e45c6681"
+   :bytes  6332
+   :shows  "a provider component: typed host boundary, bytes ABI, no ambient authority"}]}
