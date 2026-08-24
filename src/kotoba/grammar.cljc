@@ -116,6 +116,31 @@
    (when (some? contract)
      (into #{} (keys (or (core-contracts/host-imports contract) {}))))))
 
+(defn sugar-heads
+  "Call heads admitted by the `:sugar` table.
+
+  A `:sugar` entry is keyed by a call head (`:when`, `:->`) OR by a FEATURE
+  whose real heads are listed under `:forms` (`:closed-multimethod` →
+  `defmulti`/`defmethod`). Reading only the keys admits the feature name — a
+  symbol that cannot appear in source — and rejects the heads that can.
+
+  Measured 2026-08-24, before this read `:forms`: `strict-problems` admitted
+  `loop-recur`, `closed-multimethod` and `dataspace` (0 occurrences between
+  them across kotoba-lang) while rejecting `loop` and `recur` (57 each),
+  `defmulti` and `defmethod`. The compiler admits those, so the same named
+  invariant had two mechanisms that disagreed — the hazard `:forbidden-heads`
+  already carries a note about for `atom`/`reset!`.
+
+  `:forms` written as prose describes a shape rather than a head (only
+  `:nested-destructuring` does this), so the key is kept for those."
+  [sugar]
+  (reduce (fn [acc [k v]]
+            (let [forms (filter symbol? (:forms v))]
+              (if (seq forms)
+                (into acc forms)
+                (conj acc (symbol (name k))))))
+          #{} sugar))
+
 (defn admitted-heads
   "Union of catalog-admitted symbols + live host-import ops.
 
@@ -125,8 +150,7 @@
   ([host-ops]
    (when (some? host-ops)
      (let [c (catalog)
-           sugar-keys (into #{} (map (fn [k] (symbol (name k))))
-                            (keys (:sugar c {})))]
+           sugar-keys (sugar-heads (:sugar c {}))]
        (into #{}
              (concat (as-sym-set (:core-special-forms c #{}))
                      sugar-keys
