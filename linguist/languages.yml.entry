@@ -1,0 +1,24 @@
+# Insert alphabetically into lib/linguist/languages.yml, between "Kotlin" and
+# "KRL". Omit language_id when opening the PR; `script/update-ids` generates it.
+#
+# ace_mode / codemirror_mode: Kotoba is an S-expression surface, so the Clojure
+# modes are the closest existing fallbacks. Janet does the same with Scheme.
+#
+# tm_scope points at this repository, added on the Linguist side with:
+#   script/add-grammar https://github.com/kotoba-lang/grammar
+# The grammar is MIT-licensed (one of Linguist's accepted licences) and lives
+# at syntaxes/kotoba.tmLanguage.json, generated from
+# resources/kotoba/lang/guest-grammar.edn.
+#
+# color: no brand colour is declared anywhere in kotoba-lang, so this is a
+# proposal rather than a record. Change it freely before submitting; it is the
+# one field here that is not derived from something.
+Kotoba:
+  type: programming
+  color: "#2563eb"
+  extensions:
+  - ".kotoba"
+  tm_scope: source.kotoba
+  ace_mode: clojure
+  codemirror_mode: clojure
+  codemirror_mime_type: text/x-clojure

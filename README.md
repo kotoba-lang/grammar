@@ -84,6 +84,40 @@ metacharacters outside a character class: every pattern still compiled,
 `--check` still said FRESH, and every hyphenated head silently stopped
 matching. Only tokenizing real source found it.
 
+## Linguist status
+
+Kotoba is **not yet in Linguist**, and `.gitattributes` cannot stand in:
+`linguist-language=` only accepts names already in `languages.yml` and
+silently ignores anything else.
+
+Acceptance is gated on usage, not on paperwork.
+[CONTRIBUTING.md](https://github.com/github-linguist/linguist/blob/main/CONTRIBUTING.md)
+wants ≥2000 files per extension indexed in the last year excluding forks,
+distributed across unique `:user/:repo` — and reviewers filter the primary
+language owner's accounts out with `-user:` before assessing. For a language
+whose sources all live in its own org, that filter is the whole story:
+
+```bash
+nbb tools/linguist-readiness.cljs   # 0 ready · 1 measured and short · 3 could not measure
+```
+
+Measured 2026-08-24: **raw 27, owner-excluded 0, threshold 2000.** So the
+submission kit is written and staged rather than filed —
+[`linguist/PULL_REQUEST.md`](linguist/PULL_REQUEST.md),
+[`linguist/languages.yml.entry`](linguist/languages.yml.entry) and
+[`linguist/samples.edn`](linguist/samples.edn) are ready the day the meter
+turns green. Filing before then gets the PR closed, and a closed PR is harder
+to reopen than a late one is to file.
+
+The exit codes are three-valued deliberately: a run that could not reach the
+search API must not return what a run that measured and found the corpus
+healthy returns. `--self-test` checks the queries themselves, since a typo'd
+`-user:` would report a healthier number than the truth.
+
+`linguist/samples.edn` records provenance rather than copies — repo, path and
+commit for each sample. A frozen duplicate here would be one more vendored copy
+aging on its own schedule, which this repo family has already paid for once.
+
 ## Test
 
 ```bash
