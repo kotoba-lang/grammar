@@ -40,13 +40,25 @@ capability.
 
 | query | files |
 |---|---|
-| [`extension:kotoba`](https://github.com/search?q=extension%3Akotoba&type=code) | _fill in_ |
-| [`extension:kotoba -user:kotoba-lang`](https://github.com/search?q=extension%3Akotoba+-user%3Akotoba-lang&type=code) | _fill in_ |
+| [`path:*.kotoba`](https://github.com/search?type=code&q=path%3A*.kotoba) | _fill in_ |
+| [`path:*.kotoba` with the owning accounts excluded](https://github.com/search?type=code&q=path%3A*.kotoba%20-user%3Akotoba-lang%20-user%3Acom-junkawasaki%20-user%3Aetzhayyim%20-user%3Agftdcojp%20-user%3Acloud-itonami%20-user%3Anet-kotobase%20-user%3Anetwork-awai) | _fill in_ |
 
 Paste the count shown at the top of each result page. The second row is the
 one reviewers assess — CONTRIBUTING.md: *"If particular users are showing a
 high proportion of the results, for example the primary language owner, we
 will filter out those users using `-user:<username>`."*
+
+> The qualifier is `path:*.kotoba`, not `extension:kotoba`. GitHub's code
+> search rejects `extension:` outright — *"Unrecognized qualifier. Looking for
+> a file extension? Try using the path qualifier"* — and renders **0 files**
+> above the rejection. An earlier draft of this file linked the `extension:`
+> form, so a reviewer following the link would have been shown zero usage for
+> a language that had some. The REST API is the mirror image: it accepts
+> `extension:` and returns 0 for `path:*.kotoba`. The two surfaces do not
+> share an index or a query language, and only the web one is the assessment.
+
+Measured 2026-08-26: **58** and **0**. Not submittable — see
+`tools/linguist-readiness.cljs`.
 
 ## Sample licensing
 
