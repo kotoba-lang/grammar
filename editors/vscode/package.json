@@ -1,0 +1,40 @@
+{
+  "name": "kotoba",
+  "displayName": "Kotoba",
+  "description": "Syntax highlighting for Kotoba, including the heads the language refuses.",
+  "version": "0.1.0",
+  "publisher": "kotoba-lang",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kotoba-lang/grammar"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "kotoba",
+        "aliases": [
+          "Kotoba",
+          "kotoba"
+        ],
+        "extensions": [
+          ".kotoba"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "kotoba",
+        "scopeName": "source.kotoba",
+        "path": "./syntaxes/kotoba.tmLanguage.json"
+      }
+    ]
+  }
+}

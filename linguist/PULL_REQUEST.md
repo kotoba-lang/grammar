@@ -40,8 +40,8 @@ capability.
 
 | query | files |
 |---|---|
-| [`path:*.kotoba`](https://github.com/search?type=code&q=path%3A*.kotoba) | _fill in_ |
-| [`path:*.kotoba` with the owning accounts excluded](https://github.com/search?type=code&q=path%3A*.kotoba%20-user%3Akotoba-lang%20-user%3Acom-junkawasaki%20-user%3Aetzhayyim%20-user%3Agftdcojp%20-user%3Acloud-itonami%20-user%3Anet-kotobase%20-user%3Anetwork-awai) | _fill in_ |
+| [`NOT is:fork path:*.kotoba`](https://github.com/search?type=code&q=NOT%20is%3Afork%20path%3A*.kotoba) | _fill in_ |
+| [`NOT is:fork path:*.kotoba` with the owning accounts excluded](https://github.com/search?type=code&q=NOT%20is%3Afork%20path%3A*.kotoba%20-user%3Akotoba-lang%20-user%3Acom-junkawasaki%20-user%3Aetzhayyim%20-user%3Agftdcojp%20-user%3Acloud-itonami%20-user%3Anet-kotobase%20-user%3Anetwork-awai) | _fill in_ |
 
 Paste the count shown at the top of each result page. The second row is the
 one reviewers assess — CONTRIBUTING.md: *"If particular users are showing a
@@ -56,6 +56,12 @@ will filter out those users using `-user:<username>`."*
 > a language that had some. The REST API is the mirror image: it accepts
 > `extension:` and returns 0 for `path:*.kotoba`. The two surfaces do not
 > share an index or a query language, and only the web one is the assessment.
+>
+> `NOT is:fork` matches CONTRIBUTING's own worked example
+> (`NOT is:fork path:*.boot`) and the requirement's wording, "excluding forks".
+> It does not move this corpus today — 58 either way — but a query that agrees
+> with the requirement by accident stops agreeing the first time somebody forks
+> a repository.
 
 Measured 2026-08-26: **58** and **0**. Not submittable — see
 `tools/linguist-readiness.cljs`.
