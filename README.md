@@ -92,27 +92,49 @@ silently ignores anything else.
 
 Acceptance is gated on usage, not on paperwork.
 [CONTRIBUTING.md](https://github.com/github-linguist/linguist/blob/main/CONTRIBUTING.md)
-wants ≥2000 files per extension indexed in the last year excluding forks,
+wants ≥2000 files per extension indexed in the last year excluding forks
+(200 for extensions expected only once per repo, like a `Makefile`),
 distributed across unique `:user/:repo` — and reviewers filter the primary
 language owner's accounts out with `-user:` before assessing. For a language
-whose sources all live in its own org, that filter is the whole story:
+whose sources all live in its own org, that filter is the whole story.
 
 ```bash
 nbb tools/linguist-readiness.cljs   # 0 ready · 1 measured and short · 3 could not measure
 ```
 
-Measured 2026-08-24: **raw 27, owner-excluded 0, threshold 2000.** So the
-submission kit is written and staged rather than filed —
+As of 2026-08-26 it returns **3**, and the reason is worth stating plainly:
+**GitHub's code search index does not cover this org's repositories.**
+`kotoba-lang/murakumo` is public, not a fork, pushed the same day, and carries
+36 `.kotoba` files on its default branch — and `repo:kotoba-lang/murakumo
+extension:kotoba` returns 0. So the earlier line here, "measured 2026-08-24:
+raw 27, owner-excluded 0", was not a measurement of the corpus. It was a
+measurement of an index that cannot see the corpus, and the two are
+indistinguishable from the outside: the API does not error, it returns a small
+number. The script now proves the index can see a corpus it is known to contain
+before it is allowed to report a shortfall, and refuses with 3 when it cannot.
+
+What survives that correction is the part the filter decides: owner-excluded
+usage is 0 because no account outside this org writes Kotoba yet. That is a
+statement about adoption, not about indexing, and it is the one that gates the
+submission. So the kit stays written and staged rather than filed —
 [`linguist/PULL_REQUEST.md`](linguist/PULL_REQUEST.md),
 [`linguist/languages.yml.entry`](linguist/languages.yml.entry) and
 [`linguist/samples.edn`](linguist/samples.edn) are ready the day the meter
 turns green. Filing before then gets the PR closed, and a closed PR is harder
 to reopen than a late one is to file.
 
+Which threshold applies is open. 1,183 of the 1,257 repositories holding
+`.kotoba` hold exactly one — the shape of a decision core, not of a `.rb`
+file — which is the 200 tier's own description. Nobody has put that to
+Linguist, so `threshold` stays at 2000 rather than assuming the answer;
+CONTRIBUTING invites the question as a discussion, which costs nothing and
+cannot be closed the way a premature PR can.
+
 The exit codes are three-valued deliberately: a run that could not reach the
-search API must not return what a run that measured and found the corpus
-healthy returns. `--self-test` checks the queries themselves, since a typo'd
-`-user:` would report a healthier number than the truth.
+corpus must not return what a run that measured and found it short returns.
+`--self-test` checks the queries themselves, and drives each refusal path to
+the exit code it claims — a typo'd `-user:` would report a healthier number
+than the truth, and before this revision every refusal above returned 1.
 
 `linguist/samples.edn` records provenance rather than copies — repo, path and
 commit for each sample. A frozen duplicate here would be one more vendored copy
