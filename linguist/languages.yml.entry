@@ -6,7 +6,8 @@
 #
 # tm_scope points at this repository, added on the Linguist side with:
 #   script/add-grammar https://github.com/kotoba-lang/grammar
-# The grammar is MIT-licensed (one of Linguist's accepted licences) and lives
+# The grammar is Apache-2.0 (allowed by Linguist's vendor/licenses/config.yml,
+# which lists apache-2.0 alongside mit) and lives
 # at syntaxes/kotoba.tmLanguage.json, generated from
 # resources/kotoba/lang/guest-grammar.edn.
 #

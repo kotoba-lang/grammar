@@ -14,6 +14,7 @@ checkable from outside.
 - `resources/kotoba/lang/guest-grammar.edn (the grammar itself)`
 - `src/kotoba/grammar/embedded.cljc (GENERATED projection of it — do not edit)`
 - `syntaxes/kotoba.tmLanguage.json (GENERATED projection for editors and github-linguist — do not edit)`
+- `editors/vscode (VS Code extension; its syntaxes/ copy is GENERATED — do not edit)`
 
 ## Does not own
 
@@ -83,6 +84,27 @@ It earns the separation. An early generator escaped `-` and `/` as if they were
 metacharacters outside a character class: every pattern still compiled,
 `--check` still said FRESH, and every hyphenated head silently stopped
 matching. Only tokenizing real source found it.
+
+## Editors
+
+`editors/vscode/` is a VS Code extension carrying the same grammar. It exists
+because `invalid.illegal.forbidden-head.kotoba` is worth seeing while typing:
+every theme renders it as an error, so a `swap!` or an `eval` is refused in the
+editor before the compiler refuses it.
+
+```bash
+nbb tools/gen-vscode-grammar.cljs           # project the grammar into it
+nbb tools/gen-vscode-grammar.cljs --check   # gate: 1 stale/disagrees, 2 cannot tell
+```
+
+`--check` gates three things, and only the first is a copy: the grammar copy,
+the `scopeName` in `package.json` against the one inside the grammar, and the
+declared extensions against `linguist/languages.yml.entry`. The second is the
+one worth naming — a scopeName typo yields an extension that installs,
+activates, opens `.kotoba` files and highlights nothing, with no error raised
+anywhere, because VS Code resolves grammars by scope.
+
+**It does not change what GitHub displays.** That is `languages.yml`, below.
 
 ## Linguist status
 

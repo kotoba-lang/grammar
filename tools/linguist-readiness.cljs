@@ -78,8 +78,13 @@
    "cloud-itonami" "net-kotobase" "network-awai"])
 
 ;; The web code search rejects `extension:`. `path:*.ext` is the qualifier it
-;; documents in that rejection, and the one that returns the corpus.
-(def raw-query (str "path:*." extension))
+;; documents in that rejection, and the one that returns the corpus. `NOT
+;; is:fork` is not decoration: the threshold is stated per extension "excluding
+;; forks", and CONTRIBUTING's own worked example is
+;; `NOT is:fork path:*.boot`. It happens not to move this corpus -- 58 either
+;; way, 2026-08-26 -- but a query that agrees with the requirement by accident
+;; stops agreeing the first time somebody forks a repository.
+(def raw-query (str "NOT is:fork path:*." extension))
 (def assessed-query
   (str raw-query " " (str/join " " (map #(str "-user:" %) owner-users))))
 
@@ -148,7 +153,9 @@
                 (when-not pred (reset! ok false))
                 (println (str "  " (if pred "ok  " "FAIL") " " label)))]
     (check "the raw query uses the qualifier the web search accepts"
-           (= raw-query "path:*.kotoba"))
+           (= raw-query "NOT is:fork path:*.kotoba"))
+    (check "the raw query excludes forks, as the threshold is stated"
+           (str/includes? raw-query "NOT is:fork"))
     (check "it does not use the qualifier the web search rejects"
            (not (str/includes? raw-query "extension:")))
     (check "every owner account is excluded in the assessed query"
