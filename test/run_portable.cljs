@@ -33,9 +33,10 @@
 ;; and a runner naming a subset prints the same `Ran N tests` shape as one
 ;; naming all of them.
 (require '[cljs.test :as t]
-         '[grammar-test])
+         '[grammar-test]
+         '[highlight-test])
 
 (defmethod t/report [:cljs.test/default :end-run-tests] [m]
   (when-not (t/successful? m) (set! (.-exitCode js/process) 1)))
 
-(t/run-tests 'grammar-test)
+(t/run-tests 'grammar-test 'highlight-test)

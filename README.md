@@ -11,6 +11,7 @@ checkable from outside.
 ## Owns
 
 - `kotoba.grammar (guest grammar gate)`
+- `kotoba.grammar.highlight (portable source tokenizer and scope API)`
 - `resources/kotoba/lang/guest-grammar.edn (the grammar itself)`
 - `src/kotoba/grammar/embedded.cljc (GENERATED projection of it — do not edit)`
 - `syntaxes/kotoba.tmLanguage.json (GENERATED projection for editors and github-linguist — do not edit)`
@@ -48,6 +49,26 @@ call in a guest module as a grammar violation. Instead the ops are an explicit
 argument (`strict-problems` and `admitted-heads` both take them), and the
 no-argument forms answer nil off the JVM — a strict check with no host surface
 returns one `:grammar-unavailable` problem rather than a list of invented ones.
+
+## Syntax highlighting library
+
+`kotoba.grammar.highlight/tokenize` is the reusable source of syntax tokens for
+websites, play demos, documentation generators, and editor adapters. It reads
+the same generated catalog as the grammar gate, has no runtime dependency on
+the JVM, Node, an editor, regex-engine packages, or the capability-contract
+library, and preserves the input exactly when token texts are concatenated.
+
+```clojure
+(require '[kotoba.grammar.highlight :as highlight])
+
+(highlight/tokenize "(defn answer [] (+ 40 2))")
+;; => [{:text "(" :scope "punctuation.section.parens.kotoba"} ...]
+```
+
+The TextMate generator consumes `highlight/vocabulary`, so the library and
+editor projection cannot acquire independent copies of the admitted and
+forbidden word lists. Presentation remains the consumer's responsibility: the
+API returns stable TextMate-compatible scope names and does not ship CSS.
 
 ## The TextMate projection
 
