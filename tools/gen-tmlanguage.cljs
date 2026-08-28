@@ -28,46 +28,11 @@
 
 (require '["node:fs" :as fs]
          '[clojure.edn :as edn]
-         '[clojure.string :as str])
+         '[clojure.string :as str]
+         '[kotoba.grammar.highlight :as highlight])
 
 (def edn-path "resources/kotoba/lang/guest-grammar.edn")
 (def out-path "syntaxes/kotoba.tmLanguage.json")
-
-;; ---------------------------------------------------------------- vocabulary
-;; Heads arrive as symbols, keywords or strings depending on whether the name is
-;; a valid bare EDN symbol (`"/"` and `"i64+"` are not). Normalise to strings.
-
-(defn- ->names [x]
-  (->> (cond (map? x) (keys x) (set? x) x (sequential? x) x :else [x])
-       (map #(if (keyword? %) (name %) (str %)))
-       (remove str/blank?)
-       set))
-
-;; A `:sugar` entry names either a call head (its key) or a feature whose real
-;; heads are listed under `:forms`. Prefer `:forms` when they are symbols.
-;; `:forms` written as prose describes a shape, not a head, so the key is used
-;; and the entry is reported rather than silently treated as vocabulary.
-(def ^:private sugar-prose (atom #{}))
-
-(defn- sugar-heads [sugar]
-  (reduce (fn [acc [k v]]
-            (let [forms (:forms v)]
-              (cond
-                (and (seq forms) (every? symbol? forms)) (into acc (map str forms))
-                (seq forms) (do (swap! sugar-prose conj (name k)) (conj acc (name k)))
-                :else (conj acc (name k)))))
-          #{} sugar))
-
-(defn- vocabulary [authority]
-  {:special   (->names (:core-special-forms authority))
-   :sugar     (sugar-heads (:sugar authority))
-   :forbidden (->names (:forbidden-heads authority))
-   :host-op   (into (->names (:string-head-host-ops authority))
-                    (->names (:data-head-host-ops authority)))
-   :builtin   (reduce into #{} [(->names (:arithmetic authority))
-                                (->names (:comparisons authority))
-                                (->names (:predicates authority))
-                                (->names (:admitted-builtins authority))])})
 
 ;; ------------------------------------------------------------------- regexes
 ;; Clojure-family symbols contain regex metacharacters and are not \b-delimited,
@@ -124,7 +89,7 @@
     (if-not (fs/existsSync edn-path)
       (do (println (str "cannot read " edn-path)) (set! (.-exitCode js/process) 2))
       (let [authority (edn/read-string (fs/readFileSync edn-path "utf8"))
-            vocab (vocabulary authority)
+            vocab (highlight/vocabulary authority)
             empty-sets (keep (fn [[k v]] (when (empty? v) k)) vocab)]
         (if (seq empty-sets)
           ;; An authority we failed to parse must not yield a grammar that
@@ -142,10 +107,6 @@
               (do (fs/writeFileSync out-path json)
                   (println (str "wrote " out-path))
                   (doseq [[k v] (sort-by key vocab)]
-                    (println (str "  " (name k) "=" (count v))))
-                  (when (seq @sugar-prose)
-                    (println (str "  note: " (count @sugar-prose)
-                                  " sugar entries describe a shape rather than a head; "
-                                  "key used verbatim: " (str/join ", " (sort @sugar-prose)))))))))))))
+                    (println (str "  " (name k) "=" (count v))))))))))))
 
 (-main (vec (drop 3 (js->clj js/process.argv))))
