@@ -9,12 +9,35 @@
     "type": "git",
     "url": "https://github.com/kotoba-lang/grammar"
   },
+  "homepage": "https://kotoba-lang.org/#docs",
+  "bugs": {
+    "url": "https://github.com/kotoba-lang/grammar/issues"
+  },
   "engines": {
     "vscode": "^1.75.0"
   },
   "categories": [
     "Programming Languages"
   ],
+  "keywords": [
+    "kotoba",
+    "language",
+    "syntax-highlighting",
+    "textmate",
+    "capability-security"
+  ],
+  "galleryBanner": {
+    "color": "#111827",
+    "theme": "dark"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": true
+    },
+    "virtualWorkspaces": {
+      "supported": true
+    }
+  },
   "contributes": {
     "languages": [
       {

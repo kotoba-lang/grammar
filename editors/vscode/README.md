@@ -20,6 +20,16 @@ gap and why `.gitattributes` cannot stand in.
 It also has no language server behind it: no completion, no go-to-definition,
 no diagnostics. Grammar only.
 
+## Install from the Marketplace
+
+Search for `Kotoba` in VS Code Extensions, or run:
+
+```text
+ext install kotoba-lang.kotoba
+```
+
+[Open the Visual Studio Marketplace listing](https://marketplace.visualstudio.com/items?itemName=kotoba-lang.kotoba)
+
 ## Install from source
 
 ```bash
@@ -46,7 +56,7 @@ refuses to let the copy drift, and checks two things a copy check would not:
 
 Do not edit anything in `syntaxes/` here. Edit the EDN authority, regenerate.
 
-## Not published
+## Support
 
-There is no Marketplace listing. Publishing needs a `vsce` publisher identity,
-which is an account decision rather than a code one.
+Please report highlighting bugs and false-positive forbidden heads in the
+[grammar issue tracker](https://github.com/kotoba-lang/grammar/issues).
