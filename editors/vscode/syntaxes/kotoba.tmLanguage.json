@@ -35,7 +35,7 @@
     },
     {
       "name": "invalid.illegal.forbidden-head.kotoba",
-      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:alter-var-root|ns-resolve|load-file|volatile!|defmacro|send-off|binding|locking|require|resolve|dosync|future|import|reset!|agent|catch|swap!|throw|atom|eval|load|pmap|send|set!|new|ref|try|use|var|\\.\\.|\\.)(?![^\\s()\\[\\]{}\",;'`@^~])"
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:alter-var-root|load-string|read-string|ns-resolve|load-file|volatile!|defmacro|send-off|binding|compile|locking|require|resolve|dosync|future|import|reset!|agent|catch|swap!|throw|atom|load|pmap|send|set!|new|ref|try|use|var|\\.\\.|\\.)(?![^\\s()\\[\\]{}\",;'`@^~])"
     },
     {
       "name": "keyword.control.kotoba",
@@ -43,7 +43,7 @@
     },
     {
       "name": "keyword.control.sugar.kotoba",
-      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:portable-string-symbol-values|typed-capability-call|nested-destructuring|inline-fn-callback|interface-contract|record-constructor|protocol-dispatch|extend-protocol|keyword-literal|string-host-arg|vector-literal|data-host-arg|facet-enter!|facet-leave!|extend-type|lazy-empty\\?|lazy-filter|map-literal|set-literal|defdesugar|lazy-first|contains\\?|defmethod|lazy-cons|lazy-rest|option-or|when-some|defmulti|document|lazy-map|observe!|retract!|when-let|when-not|assert!|cond->>|dotimes|if-some|some->>|assert|dissoc|filter|fn-ref|if-let|if-not|invoke|reduce|some->|apply|assoc|bytes|condp|count|doseq|match|recur|as->|case|cond|conj|disj|drop|keys|loop|not=|peek|take|vals|when|->>|and|get|map|nth|pop|->|<=|>=|do|fn|or|<|=|>)(?![^\\s()\\[\\]{}\",;'`@^~])"
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:portable-string-symbol-values|typed-capability-call|nested-destructuring|inline-fn-callback|interface-contract|record-constructor|protocol-dispatch|extend-protocol|keyword-literal|string-host-arg|vector-literal|data-host-arg|facet-enter!|facet-leave!|extend-type|lazy-empty\\?|lazy-filter|map-literal|set-literal|defdesugar|lazy-first|contains\\?|defmethod|lazy-cons|lazy-rest|option-or|when-some|defmulti|document|lazy-map|observe!|retract!|when-let|when-not|assert!|cond->>|dotimes|if-some|some->>|assert|dissoc|filter|fn-ref|if-let|if-not|invoke|reduce|some->|apply|assoc|bytes|condp|count|doseq|match|recur|as->|case|cond|conj|disj|drop|eval|keys|loop|not=|peek|take|vals|when|->>|and|get|map|nth|pop|->|<=|>=|do|fn|or|<|=|>)(?![^\\s()\\[\\]{}\",;'`@^~])"
     },
     {
       "name": "support.function.host-op.kotoba",

@@ -25,7 +25,7 @@
                           ["0x2a" "constant.numeric.kotoba"]
                           ["http-fetch" "support.function.host-op.kotoba"]
                           ["\"https://example.test\\\"/x\"" "string.quoted.double.kotoba"]
-                          ["eval" "invalid.illegal.forbidden-head.kotoba"]
+                          ["eval" "keyword.control.sugar.kotoba"]
                           ["::ambient" "constant.other.keyword.kotoba"]
                           ["(" "punctuation.section.parens.kotoba"]]]
       (is (= scope (:scope (token-for source text)))
@@ -35,8 +35,8 @@
 (deftest vocabulary-is-an-explicit-testable-input
   (let [source "(eval x)"
         default-vocab (highlight/vocabulary)
-        weakened (update default-vocab :forbidden disj "eval")]
-    (is (= "invalid.illegal.forbidden-head.kotoba"
+        weakened (update default-vocab :sugar disj "eval")]
+    (is (= "keyword.control.sugar.kotoba"
            (:scope (token-for source "eval"))))
     (is (= "variable.other.symbol.kotoba"
            (:scope (first (filter #(= "eval" (:text %))

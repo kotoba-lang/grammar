@@ -83,8 +83,8 @@ nbb tools/gen-tmlanguage.cljs --check   # gate: exit 1 stale, 2 cannot tell
 ```
 
 It exists instead of aliasing `source.clojure` because Kotoba is Clojure-shaped
-and Clojure's grammar says the wrong thing about it. `(atom x)`, `(eval x)`,
-`(swap! …)` — the 31 heads in `:forbidden-heads` — are not ordinary calls the
+and Clojure's grammar says the wrong thing about it. `(atom x)`,
+`(load-string x)`, `(swap! …)` — the heads in `:forbidden-heads` — are not ordinary calls the
 standard library happens to lack; they are the no-ambient-authority invariant,
 and the compiler fails closed on every one. This grammar scopes them
 `invalid.illegal.forbidden-head.kotoba`, so the refusal shows up in the editor
@@ -110,8 +110,10 @@ matching. Only tokenizing real source found it.
 
 `editors/vscode/` is a VS Code extension carrying the same grammar. It exists
 because `invalid.illegal.forbidden-head.kotoba` is worth seeing while typing:
-every theme renders it as an error, so a `swap!` or an `eval` is refused in the
-editor before the compiler refuses it.
+every theme renders it as an error, so a `swap!` or `load-string` is refused in
+the editor before the compiler refuses it. Typed `(eval request)` is instead
+highlighted as admitted sugar: it names checked KIR by CID through the
+`:code/eval` ability and never means host evaluation.
 
 ```bash
 nbb tools/gen-vscode-grammar.cljs           # project the grammar into it

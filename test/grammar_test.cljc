@@ -106,7 +106,7 @@
     (testing "forbidden heads are catalog-only and are still caught with no
               host surface at all, when strict mode is off"
       (let [problems (grammar/strict-problems
-                      '[(defn main [] (eval "x"))]
+                      '[(defn main [] (load-string "x"))]
                       {:kotoba.policy/strict-grammar false}
                       nil)]
         (is (= [:denied-form] (mapv :kotoba.runtime/problem problems)))))))
