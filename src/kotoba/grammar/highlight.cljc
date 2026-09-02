@@ -46,15 +46,28 @@
   "Build the highlighting vocabulary from a grammar catalog."
   ([] (vocabulary embedded/catalog))
   ([authority]
-   {:special   (->names (:core-special-forms authority))
-    :sugar     (sugar-heads (:sugar authority))
-    :forbidden (->names (:forbidden-heads authority))
-    :host-op   (into (->names (:string-head-host-ops authority))
-                     (->names (:data-head-host-ops authority)))
-    :builtin   (reduce into #{} [(->names (:arithmetic authority))
-                                 (->names (:comparisons authority))
-                                 (->names (:predicates authority))
-                                 (->names (:admitted-builtins authority))])}))
+   (let [builtin (reduce into #{} [(->names (:arithmetic authority))
+                                   (->names (:comparisons authority))
+                                   (->names (:predicates authority))
+                                   (->names (:admitted-builtins authority))])]
+     {:special   (->names (:core-special-forms authority))
+      ;; A sugar entry's `:forms` are not always NEW heads. Some name the heads
+      ;; an entry applies TO: `:type-directed-arithmetic` (landed 2026-09-02)
+      ;; carries `[+ - * / < > <= >= =]`, which are the arithmetic and
+      ;; comparison builtins, and `symbol-scope` tries :sugar before :builtin,
+      ;; so `+` highlighted as control sugar. Measured 2026-09-03, when this
+      ;; repository's vendored copy was resynced past that entry -- two
+      ;; authority revisions of drift had been hiding it.
+      ;;
+      ;; A head the catalog admits as a builtin IS a builtin; a sugar rule that
+      ;; refines what it means does not reclassify it. So subtract, once, here,
+      ;; rather than reorder `symbol-scope` -- `eval` stays sugar because it is
+      ;; a sugar head and not a builtin, which is the distinction being drawn.
+      :sugar     (reduce disj (sugar-heads (:sugar authority)) builtin)
+      :forbidden (->names (:forbidden-heads authority))
+      :host-op   (into (->names (:string-head-host-ops authority))
+                       (->names (:data-head-host-ops authority)))
+      :builtin   builtin})))
 
 (def ^:private delimiter-chars
   #{\( \) \[ \] \{ \} \" \, \; \' \` \@ \^ \~})
