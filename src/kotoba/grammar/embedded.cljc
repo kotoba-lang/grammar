@@ -505,7 +505,22 @@
  :arithmetic #{+ - * quot bit-xor bit-and bit-or}
  :comparisons #{= < > <= >=}
  :predicates #{not zero? pos? neg? string? symbol? keyword? string-length string=
-               string-concat string-substring symbol}
+               string-concat string-substring symbol
+               ;; String search surface (kbb scripts-port wave 2): bounded UTF-8
+               ;; byte-index operations. string-contains? and string-split-count
+               ;; were already typed and evaluated by the compiler and KIR; the
+               ;; grammar authority simply did not say so, so every kbb guest
+               ;; that needed a substring search hand-rolled a char-at
+               ;; recursion (src/edn_validate.kotoba skip-string). All three
+               ;; take UTF-8 byte semantics like string-substring; both string
+               ;; arguments obey the 127-byte literal bound.
+               ;;   (string-index-of haystack needle) -> i64, first UTF-8 byte
+               ;;     offset of needle in haystack, -1 when absent (Clojure's
+               ;;     .indexOf contract, byte-unit). Empty needle is refused.
+               ;;   (string-contains? haystack needle) -> bool.
+               ;;   (string-split-count haystack sep) -> i64, non-empty sep,
+               ;;     segment count.
+               string-index-of string-contains? string-split-count}
 
  ;; Host-import families that take UTF-8 (ptr,len) as first two wasm params.
  ;; Host-import families whose first argument is STRUCTURED data rather than
@@ -537,6 +552,13 @@
    fs-read fs-write fs-write-atomic
    sha256-hex log-write log-read
    llm-infer
+   ;; kbb ops-script surface (ADR-2607181900 readiness gate): env-read takes
+   ;; (name-ptr name-len) — a bare string literal lowers exactly like the
+   ;; fs-read path argument above.
+   env-read
+   ;; fs-browse takes (dir-ptr dir-len) — same bare-string lowering
+   ;; (kbb slice 2).
+   fs-browse
    ;; web-wide crawl (com-junkawasaki/root ADR-2607252400)。string-head:
    ;; 先頭2引数が UTF-8 (ptr,len) に lower される。WARC 本文(250KB級)は
    ;; guest に渡さず、cc-warc-extract は CID + 有界サマリだけを返す。
