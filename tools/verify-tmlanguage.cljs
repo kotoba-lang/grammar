@@ -36,18 +36,18 @@
 (def cases
   [["(defn f [x] x)"       "defn"          "keyword.control"
     "core special form"]
-   ["(atom 1)"             "atom"          "invalid.illegal"
-    "forbidden head must render illegal — this is the no-ambient-authority invariant"]
-   ["(eval x)"             "eval"          "invalid.illegal"
-    "forbidden head must render illegal"]
+   ["(atom 1)"             "atom"          "keyword.control"
+    "admitted non-escaping local atom: left forbidden-heads 2026-09-02 (lang/local-state.edn)"]
+   ["(eval x)"             "eval"          "keyword.control"
+    "bounded typed-cap-call sugar; left forbidden-heads with :never #{:source-text ...}"]
    ["(string-concat a b)"  "string-concat" "support.function"
     "admitted predicate must be a support function"]
    ["(i64+ a b)"           "i64+"          "support.function"
     "longest-first alternation must pick i64+ over i64"]
    ["(http-fetch \"u\")"   "http-fetch"    "support.function.host-op"
     "host op must be distinguishable from an ordinary builtin"]
-   ["(-> x f)"             "->"            "keyword.control.sugar"
-    "sugar head"]
+   ["(-> x f)"             "->"            "support.function"
+    "admitted as builtin: a sugar feature refines it, does not reclassify it"]
    [";; a comment"         ";; a comment"  "comment.line"
     "line comment"]
    ["(def k :some/keyword)" ":some/keyword" "constant.other.keyword"

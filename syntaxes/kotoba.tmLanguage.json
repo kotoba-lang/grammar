@@ -47,7 +47,7 @@
     },
     {
       "name": "support.function.host-op.kotoba",
-      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:kami-move-tagged-toward!|kami-despawn-within!|tls-server-end-point|clipboard-write-str|kami-nearest-tagged|kgraph-get-objects|kami-count-tagged|transport-connect|cc-warc-extract|fs-write-atomic|kgraph-retract!|corpus-publish|keychain-write|kgraph-assert!|nearest-tagged|corpus-append|keychain-read|cc-cdx-query|count-tagged|kgraph-query|spawn-entity|audio-play|http-fetch|kami-spawn|play-sound|sha256-hex|fs-browse|http-post|kami-axis|llm-infer|log-write|env-read|fs-write|log-read|tls-open|fs-read|axis)(?![^\\s()\\[\\]{}\",;'`@^~])"
+      "match": "(?<![^\\s()\\[\\]{}\",;'`@^~])(?:kami-move-tagged-toward!|kami-despawn-within!|tls-server-end-point|clipboard-write-str|kami-nearest-tagged|kgraph-get-objects|kami-count-tagged|transport-connect|cc-warc-extract|fs-write-atomic|kgraph-retract!|corpus-publish|keychain-write|kgraph-assert!|nearest-tagged|corpus-append|fs-browse-dir|keychain-read|cc-cdx-query|count-tagged|kgraph-query|spawn-entity|audio-play|http-fetch|kami-spawn|play-sound|sha256-hex|fs-browse|http-post|kami-axis|llm-infer|log-write|env-read|fs-write|log-read|tls-open|fs-read|axis)(?![^\\s()\\[\\]{}\",;'`@^~])"
     },
     {
       "name": "support.function.builtin.kotoba",
