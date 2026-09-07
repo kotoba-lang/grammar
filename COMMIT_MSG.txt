@@ -1,0 +1,12 @@
+grammar: sync guest-grammar.edn to authority (fs-browse-dir head, e333abac -> new)
+
+Vendored-copies resync: the on-disk copy of lang/guest-grammar.edn is
+updated to the authority's fs-browse-dir addition (capability id 261,
+kotoba-lang/find recursive tree-walk), and the committed projection
+(src/kotoba/grammar/embedded.cljc) is regenerated via tools/gen-embedded.cljs
+so the embedded catalog matches the on-disk EDN.
+
+The grammar sha256 moves e333abac -> ee7ea37c. The paired kotoba-lang,
+kotoba-sema and kotoba pins follow in their own PRs (per
+lang/vendored-copies.edn :dependant? and each repo's guest_grammar_vendor
+digest pin carrying this sha together).
