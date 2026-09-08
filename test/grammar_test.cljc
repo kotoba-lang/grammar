@@ -1,7 +1,7 @@
 (ns grammar-test
   (:require [clojure.test :refer [deftest is testing]]
             #?(:clj [clojure.edn :as edn])
-            [clojure.string :as str]
+            [kotoba.lang.text :as str]
             [kotoba.grammar :as grammar]
             [kotoba.grammar.embedded :as embedded]))
 

@@ -43,7 +43,7 @@
      its job with a `:grammar-unavailable` problem rather than inventing
      violations. Forbidden heads come from the catalog and are checked
      regardless, on both runtimes."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [kotoba.core.contracts :as core-contracts]
             [kotoba.grammar.embedded :as embedded]))
 
