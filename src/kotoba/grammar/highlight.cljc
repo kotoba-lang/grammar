@@ -6,7 +6,7 @@
   in Clojure, ClojureScript, nbb, browsers, documentation generators, and
   editor adapters. Tokens preserve the source byte-for-byte when their `:text`
   values are concatenated."
-  (:require [clojure.string :as str]
+  (:require [kotoba.lang.text :as str]
             [kotoba.grammar.embedded :as embedded]))
 
 (def scopes
