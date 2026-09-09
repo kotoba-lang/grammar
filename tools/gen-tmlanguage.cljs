@@ -28,7 +28,7 @@
 
 (require '["node:fs" :as fs]
          '[clojure.edn :as edn]
-         '[clojure.string :as str]
+         '[kotoba.lang.text :as str]
          '[kotoba.grammar.highlight :as highlight])
 
 (def edn-path "resources/kotoba/lang/guest-grammar.edn")
@@ -45,7 +45,7 @@
 
 (def ^:private delim "\\s()\\[\\]{}\",;'`@^~")
 
-(defn- esc [s] (str/replace s #"[.*+?^$()|\[\]{}\\]" "\\$&"))
+(defn- esc [s] (str/re-quote s))
 
 (defn- alternation [names]
   (->> names (sort-by (juxt (comp - count) identity)) (map esc) (str/join "|")))

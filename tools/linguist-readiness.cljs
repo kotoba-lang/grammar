@@ -67,7 +67,7 @@
 ;;   2  usage error
 ;;   3  UNVERIFIED, nothing measured -> not evidence of anything
 
-(require '[clojure.string :as str])
+(require '[kotoba.lang.text :as str])
 
 (def extension "kotoba")
 (def threshold 2000)

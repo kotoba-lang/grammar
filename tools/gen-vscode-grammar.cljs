@@ -29,7 +29,7 @@
 ;; that read it and found it current returns.
 
 (require '["node:fs" :as fs]
-         '[clojure.string :as str])
+         '[kotoba.lang.text :as str])
 
 (def grammar-path "syntaxes/kotoba.tmLanguage.json")
 (def ext-dir "editors/vscode")

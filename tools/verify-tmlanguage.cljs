@@ -23,7 +23,7 @@
 ;; Exit: 0 pass, 1 assertion failed, 2 cannot tell (deps or grammar unreadable).
 
 (require '["node:fs" :as fs]
-         '[clojure.string :as str])
+         '[kotoba.lang.text :as str])
 
 (def args (vec (drop 3 (js->clj js/process.argv))))
 (def grammar-path "syntaxes/kotoba.tmLanguage.json")
