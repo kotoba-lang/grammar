@@ -2,3 +2,6 @@
 .clj-kondo/
 .lsp/
 node_modules/
+
+# nbb dependency cache (nbb.edn :deps)
+.nbb/

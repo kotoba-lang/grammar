@@ -30,7 +30,7 @@
 ;; projection drifting from the EDN, so that is what is guarded: `--check`
 ;; here, and `the-embedded-catalog-matches-the-edn` in the suite, which fails
 ;; rather than passes when it cannot read the EDN.
-(require '["node:fs" :as fs] '[clojure.string :as str])
+(require '["node:fs" :as fs] '[kotoba.lang.text :as str])
 
 (def edn-path "resources/kotoba/lang/guest-grammar.edn")
 (def out-path "src/kotoba/grammar/embedded.cljc")
