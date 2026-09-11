@@ -33,7 +33,7 @@ ext install kotoba-lang.kotoba
 ## Install from source
 
 ```bash
-nbb tools/gen-vscode-grammar.cljk     # from the repository root
+kbb --backend sci tools/gen-vscode-grammar.cljk     # from the repository root
 ln -s "$PWD/editors/vscode" ~/.vscode/extensions/kotoba
 ```
 

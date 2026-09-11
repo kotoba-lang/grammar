@@ -36,8 +36,8 @@ while this library is the root project. Edit the EDN; regenerate the
 projection; `--check` refuses to let them drift.
 
 ```bash
-nbb tools/gen-embedded.cljk           # after editing the EDN
-nbb tools/gen-embedded.cljk --check   # gate: exit 1 stale, 2 cannot tell
+kbb --backend sci tools/gen-embedded.cljk           # after editing the EDN
+kbb --backend sci tools/gen-embedded.cljk --check   # gate: exit 1 stale, 2 cannot tell
 ```
 
 One thing did NOT become portable, deliberately: the live host-import surface.
@@ -78,8 +78,8 @@ read. Linguist requires a syntax grammar before GitHub can display Kotoba as a
 language at all; `script/add-grammar` points at this repository.
 
 ```bash
-nbb tools/gen-tmlanguage.cljk           # after editing the EDN
-nbb tools/gen-tmlanguage.cljk --check   # gate: exit 1 stale, 2 cannot tell
+kbb --backend sci tools/gen-tmlanguage.cljk           # after editing the EDN
+kbb --backend sci tools/gen-tmlanguage.cljk --check   # gate: exit 1 stale, 2 cannot tell
 ```
 
 It exists instead of aliasing `source.clojure` because Kotoba is Clojure-shaped
@@ -98,7 +98,7 @@ suite:
 
 ```bash
 npm i --no-save vscode-textmate vscode-oniguruma
-nbb tools/verify-tmlanguage.cljk path/to/*.kotoba
+kbb --backend sci tools/verify-tmlanguage.cljk path/to/*.kotoba
 ```
 
 It earns the separation. An early generator escaped `-` and `/` as if they were
@@ -116,8 +116,8 @@ highlighted as admitted sugar: it names checked KIR by CID through the
 `:code/eval` ability and never means host evaluation.
 
 ```bash
-nbb tools/gen-vscode-grammar.cljk           # project the grammar into it
-nbb tools/gen-vscode-grammar.cljk --check   # gate: 1 stale/disagrees, 2 cannot tell
+kbb --backend sci tools/gen-vscode-grammar.cljk           # project the grammar into it
+kbb --backend sci tools/gen-vscode-grammar.cljk --check   # gate: 1 stale/disagrees, 2 cannot tell
 ```
 
 `--check` gates three things, and only the first is a copy: the grammar copy,
@@ -144,8 +144,8 @@ language owner's accounts out with `-user:` before assessing. For a language
 whose sources all live in its own org, that filter is the whole story.
 
 ```bash
-nbb tools/linguist-readiness.cljk                     # prints the queries; exits 3
-nbb tools/linguist-readiness.cljk --raw 58 --assessed 0
+kbb --backend sci tools/linguist-readiness.cljk                     # prints the queries; exits 3
+kbb --backend sci tools/linguist-readiness.cljk --raw 58 --assessed 0
 ```
 
 **Measured 2026-08-26: raw 58, owner-excluded 0, threshold 2000.**
@@ -207,14 +207,14 @@ aging on its own schedule, which this repo family has already paid for once.
 ## Test
 
 ```bash
-clojure -M:test                       # JVM
+kbb -M:test                       # JVM
 
 # nbb has no dependency resolution, so name the pinned git dep explicitly
 CC=~/.gitlibs/libs/io.github.kotoba-lang/kotoba-core-contracts/<sha>/src
-nbb --classpath "src:test:$CC" test/run_portable.cljk
+kbb --backend sci --classpath "src:test:$CC" test/run_portable.cljk
 
 # prove the suite can fail — run the table under both runtimes
-nbb tools/check-mutations.cljk
-nbb tools/mutate.cljk
-MUTATE_CMD="nbb --classpath src:test:$CC test/run_portable.cljk" nbb tools/mutate.cljk
+kbb --backend sci tools/check-mutations.cljk
+kbb --backend sci tools/mutate.cljk
+MUTATE_CMD="kbb --backend sci --classpath src:test:$CC test/run_portable.cljk" kbb --backend sci tools/mutate.cljk
 ```

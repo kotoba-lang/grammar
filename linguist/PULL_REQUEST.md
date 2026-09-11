@@ -1,7 +1,7 @@
 # Draft — do not file until `linguist-readiness.cljs` exits 0
 
 ```bash
-nbb tools/linguist-readiness.cljk
+kbb --backend sci tools/linguist-readiness.cljk
 ```
 
 `0` file it · `1` not yet, the number is in the output · `3` the run measured

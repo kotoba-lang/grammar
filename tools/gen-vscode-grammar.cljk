@@ -1,9 +1,9 @@
-#!/usr/bin/env nbb
+#!/usr/bin/env kbb
 ;; Project the TextMate grammar into the VS Code extension, and check that the
 ;; extension still agrees with the two things it has to agree with.
 ;;
-;;   nbb tools/gen-vscode-grammar.cljk           # after regenerating the grammar
-;;   nbb tools/gen-vscode-grammar.cljk --check   # gate: 1 stale/disagrees, 2 cannot tell
+;;   kbb --backend sci tools/gen-vscode-grammar.cljk           # after regenerating the grammar
+;;   kbb --backend sci tools/gen-vscode-grammar.cljk --check   # gate: 1 stale/disagrees, 2 cannot tell
 ;;
 ;; VS Code resolves `contributes.grammars[].path` inside the extension folder,
 ;; so the extension needs its own copy of syntaxes/kotoba.tmLanguage.json.
@@ -102,7 +102,7 @@
                               " (scope " grammar-scope ", extensions "
                               (str/join " " (sort entry-exts)) ")"))
                 (do (println (str "STALE " ext-grammar-path
-                                  " — regenerate: nbb tools/gen-vscode-grammar.cljk"))
+                                  " — regenerate: kbb --backend sci tools/gen-vscode-grammar.cljk"))
                     (set! (.-exitCode js/process) 1))))
             (do (fs/mkdirSync (str ext-dir "/syntaxes") #js {:recursive true})
                 (fs/writeFileSync ext-grammar-path grammar)

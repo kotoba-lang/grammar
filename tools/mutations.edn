@@ -16,10 +16,10 @@
 ;;
 ;; ⚠ RUN THE TABLE TWICE. `MUTATE_CMD` picks the suite:
 ;;
-;;   nbb tools/mutate.cljk
+;;   kbb --backend sci tools/mutate.cljk
 ;;   CC=~/.gitlibs/libs/io.github.kotoba-lang/kotoba-core-contracts/<sha>/src \
-;;   MUTATE_CMD="nbb --classpath src:test:$CC test/run_portable.cljk" \
-;;     nbb tools/mutate.cljk
+;;   MUTATE_CMD="kbb --backend sci --classpath src:test:$CC test/run_portable.cljk" \
+;;     kbb --backend sci tools/mutate.cljk
 ;;
 ;; `:the-projection-cannot-drift-unnoticed` is guarded by a `#?(:clj …)` test
 ;; — the drift check belongs to the runtime that has the checkout — so it is a
