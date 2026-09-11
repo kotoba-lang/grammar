@@ -70,7 +70,7 @@
      (let [on-disk (edn/read-string
                     (slurp "resources/kotoba/lang/guest-grammar.edn"))]
        (is (= on-disk embedded/catalog)
-           "run: nbb tools/gen-embedded.cljs"))))
+           "run: nbb tools/gen-embedded.cljk"))))
 
 (deftest the-catalog-is-compiled-in-not-read
   (testing "the library reads the projection and nothing else"
@@ -153,13 +153,13 @@
        (is (seq heads)
            "the catalog must actually carry forbidden heads")
        (is (some? illegal)
-           "the grammar must scope something invalid.illegal — run: nbb tools/gen-tmlanguage.cljs")
+           "the grammar must scope something invalid.illegal — run: nbb tools/gen-tmlanguage.cljk")
        ;; Guarded: with no pattern found the assertion above already names the
        ;; reason, and 31 NullPointerExceptions on top of it would bury it.
        (doseq [head (if illegal heads [])]
          (is (.contains ^String illegal head)
              (str "forbidden head " head " is not scoped invalid.illegal"
-                  " — run: nbb tools/gen-tmlanguage.cljs")))
+                  " — run: nbb tools/gen-tmlanguage.cljk")))
        (testing "and the grammar declares the scope Linguist will reference"
          (is (.contains ^String json "\"scopeName\": \"source.kotoba\""))
          (is (.contains ^String json "\"kotoba\""))))))

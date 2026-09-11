@@ -1,7 +1,7 @@
 # Draft — do not file until `linguist-readiness.cljs` exits 0
 
 ```bash
-nbb tools/linguist-readiness.cljs
+nbb tools/linguist-readiness.cljk
 ```
 
 `0` file it · `1` not yet, the number is in the output · `3` the run measured
@@ -64,7 +64,7 @@ will filter out those users using `-user:<username>`."*
 > a repository.
 
 Measured 2026-08-26: **58** and **0**. Not submittable — see
-`tools/linguist-readiness.cljs`.
+`tools/linguist-readiness.cljk`.
 
 ## Sample licensing
 

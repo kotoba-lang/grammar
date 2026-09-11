@@ -15,7 +15,7 @@
      `resources/<path>` relative to the working directory — is right only while
      this library is the root project. So the catalog is compiled in, as the
      generated `kotoba.grammar.embedded`, projected from
-     `resources/kotoba/lang/guest-grammar.edn` by `tools/gen-embedded.cljs`.
+     `resources/kotoba/lang/guest-grammar.edn` by `tools/gen-embedded.cljk`.
      The EDN stays the thing a human edits (and the thing the upstream vendor
      sync writes); the projection is what the code reads; `--check` refuses to
      let them drift.

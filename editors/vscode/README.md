@@ -33,7 +33,7 @@ ext install kotoba-lang.kotoba
 ## Install from source
 
 ```bash
-nbb tools/gen-vscode-grammar.cljs     # from the repository root
+nbb tools/gen-vscode-grammar.cljk     # from the repository root
 ln -s "$PWD/editors/vscode" ~/.vscode/extensions/kotoba
 ```
 
@@ -43,7 +43,7 @@ Reload the window. `.kotoba` files report `kotoba` in the language picker.
 
 `syntaxes/kotoba.tmLanguage.json` is a copy — VS Code resolves
 `contributes.grammars[].path` inside the extension folder, so it cannot point
-at the one in the repository root. `tools/gen-vscode-grammar.cljs --check`
+at the one in the repository root. `tools/gen-vscode-grammar.cljk --check`
 refuses to let the copy drift, and checks two things a copy check would not:
 
 - the `scopeName` in `package.json` against the one inside the grammar. A typo

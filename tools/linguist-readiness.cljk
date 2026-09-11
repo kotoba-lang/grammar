@@ -1,9 +1,9 @@
 #!/usr/bin/env nbb
 ;; Answer "can Kotoba be submitted to github-linguist yet" with a measurement.
 ;;
-;;   nbb tools/linguist-readiness.cljs                    # print the queries to run
-;;   nbb tools/linguist-readiness.cljs --raw 58 --assessed 0
-;;   nbb tools/linguist-readiness.cljs --self-test
+;;   nbb tools/linguist-readiness.cljk                    # print the queries to run
+;;   nbb tools/linguist-readiness.cljk --raw 58 --assessed 0
+;;   nbb tools/linguist-readiness.cljk --self-test
 ;;
 ;; Linguist, CONTRIBUTING.md, "Language extension and filename usage
 ;; requirements":
@@ -110,7 +110,7 @@
   (println (str "  assessed  " assessed-query))
   (println (str "            " (search-url assessed-query)))
   (println)
-  (println "  nbb tools/linguist-readiness.cljs --raw <n> --assessed <n>"))
+  (println "  nbb tools/linguist-readiness.cljk --raw <n> --assessed <n>"))
 
 (defn- report [raw assessed]
   (cond
