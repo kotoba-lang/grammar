@@ -1,9 +1,9 @@
-#!/usr/bin/env nbb
+#!/usr/bin/env kbb
 ;; Generate `syntaxes/kotoba.tmLanguage.json` from
 ;; `resources/kotoba/lang/guest-grammar.edn`.
 ;;
-;;   nbb tools/gen-tmlanguage.cljk           # write
-;;   nbb tools/gen-tmlanguage.cljk --check   # exit 1 if stale, 2 if it cannot tell
+;;   kbb --backend sci tools/gen-tmlanguage.cljk           # write
+;;   kbb --backend sci tools/gen-tmlanguage.cljk --check   # exit 1 if stale, 2 if it cannot tell
 ;;
 ;; ## Why a TextMate grammar lives in this repo
 ;;
@@ -102,7 +102,7 @@
               (let [current (when (fs/existsSync out-path) (fs/readFileSync out-path "utf8"))]
                 (if (= current json)
                   (println (str "FRESH " out-path))
-                  (do (println (str "STALE " out-path " — regenerate: nbb tools/gen-tmlanguage.cljk"))
+                  (do (println (str "STALE " out-path " — regenerate: kbb --backend sci tools/gen-tmlanguage.cljk"))
                       (set! (.-exitCode js/process) 1))))
               (do (fs/writeFileSync out-path json)
                   (println (str "wrote " out-path))
