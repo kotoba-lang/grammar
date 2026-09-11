@@ -14,11 +14,11 @@
 ;; which `clojure -P` will have populated:
 ;;
 ;;   CC=~/.gitlibs/libs/io.github.kotoba-lang/kotoba-core-contracts/<sha>/src
-;;   nbb --classpath "src:test:$CC" test/run_portable.cljs
+;;   nbb --classpath "src:test:$CC" test/run_portable.cljk
 ;;
 ;; ## It does not have to run from the repo root
 ;;
-;; That is the whole point of `src/kotoba/grammar/embedded.cljc`. The catalog
+;; That is the whole point of `src/kotoba/grammar/embedded.cljk`. The catalog
 ;; used to be read at runtime; a ClojureScript substitute that read
 ;; `resources/<path>` relative to the working directory would have worked here
 ;; and nowhere else. Run this from any directory, with absolute classpath

@@ -16,10 +16,10 @@
 ;;
 ;; ⚠ RUN THE TABLE TWICE. `MUTATE_CMD` picks the suite:
 ;;
-;;   nbb tools/mutate.cljs
+;;   nbb tools/mutate.cljk
 ;;   CC=~/.gitlibs/libs/io.github.kotoba-lang/kotoba-core-contracts/<sha>/src \
-;;   MUTATE_CMD="nbb --classpath src:test:$CC test/run_portable.cljs" \
-;;     nbb tools/mutate.cljs
+;;   MUTATE_CMD="nbb --classpath src:test:$CC test/run_portable.cljk" \
+;;     nbb tools/mutate.cljk
 ;;
 ;; `:the-projection-cannot-drift-unnoticed` is guarded by a `#?(:clj …)` test
 ;; — the drift check belongs to the runtime that has the checkout — so it is a
@@ -38,56 +38,56 @@
  ;; against and cannot notice drift at all.
  {:id :the-projection-cannot-drift-unnoticed
   :invariant "the generated namespace matches the EDN a human edits"
-  :file "src/kotoba/grammar/embedded.cljc"
+  :file "src/kotoba/grammar/embedded.cljk"
   :find " :kotoba.lang.guest-grammar/profile-version 6"
   :replace " :kotoba.lang.guest-grammar/profile-version 99"}
 
  {:id :the-projection-cannot-drift-in-a-value-nothing-else-pins
   :invariant "drift is caught by the drift check, not by luck"
-  :file "src/kotoba/grammar/embedded.cljc"
+  :file "src/kotoba/grammar/embedded.cljk"
   :find "locking dosync"
   :replace "lockingDRIFTED dosync"}
 
  {:id :the-catalog-is-the-embedded-one
   :invariant "the library reads the projection and not something else"
-  :file "src/kotoba/grammar.cljc"
+  :file "src/kotoba/grammar.cljk"
   :find "  embedded/catalog)"
   :replace "  {})"}
 
  {:id :an-unavailable-contract-is-nil-not-empty
   :invariant "nobody could look /= there are none"
-  :file "src/kotoba/grammar.cljc"
+  :file "src/kotoba/grammar.cljk"
   :find "   (when (some? contract)\n     (into #{} (keys"
   :replace "   (when true\n     (into #{} (keys"}
 
  {:id :unknown-host-ops-make-the-admission-set-unknown
   :invariant "admitted-heads propagates nil rather than dropping 110 ops"
-  :file "src/kotoba/grammar.cljc"
+  :file "src/kotoba/grammar.cljk"
   :find "   (when (some? host-ops)\n     (let [c (catalog)"
   :replace "   (when true\n     (let [c (catalog)"}
 
  {:id :a-strict-check-that-could-not-run-does-not-report-violations
   :invariant "no host surface yields :grammar-unavailable, not :unknown-form"
-  :file "src/kotoba/grammar.cljc"
+  :file "src/kotoba/grammar.cljk"
   :find "     (if (and strict? (nil? admitted))"
   :replace "     (if (and strict? false)"}
 
  {:id :host-ops-actually-reach-the-admission-set
   :invariant "the live surface is unioned in, not silently dropped"
-  :file "src/kotoba/grammar.cljc"
+  :file "src/kotoba/grammar.cljk"
   :find "                     host-ops\n                     ;; with-variants of host ops"
   :replace "                     nil\n                     ;; with-variants of host ops"}
 
  {:id :forbidden-heads-come-from-the-catalog
   :invariant "denied forms are denied on both runtimes, host surface or not"
-  :file "src/kotoba/grammar.cljc"
+  :file "src/kotoba/grammar.cljk"
   :find "  (as-sym-set (:forbidden-heads (catalog) #{})))"
   :replace "  #{})"}
 
  ;; A mutation was written and RETARGETED here, with its reason, because
  ;; deleting one to tidy the table is what this harness exists to prevent:
  ;;
- ;;   renaming `catalog` to `catalog*` in src/kotoba/grammar.cljc scored
+ ;;   renaming `catalog` to `catalog*` in src/kotoba/grammar.cljk scored
  ;;   UNMEASURED rather than killed, and correctly: the rename broke every
  ;;   caller, the namespace stopped loading, and a suite that cannot start has
  ;;   not been shown to notice anything. The same misfire is on record in

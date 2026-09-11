@@ -13,7 +13,7 @@ checkable from outside.
 - `kotoba.grammar (guest grammar gate)`
 - `kotoba.grammar.highlight (portable source tokenizer and scope API)`
 - `resources/kotoba/lang/guest-grammar.edn (the grammar itself)`
-- `src/kotoba/grammar/embedded.cljc (GENERATED projection of it — do not edit)`
+- `src/kotoba/grammar/embedded.cljk (GENERATED projection of it — do not edit)`
 - `syntaxes/kotoba.tmLanguage.json (GENERATED projection for editors and github-linguist — do not edit)`
 - `editors/vscode (VS Code extension; its syntaxes/ copy is GENERATED — do not edit)`
 
@@ -36,8 +36,8 @@ while this library is the root project. Edit the EDN; regenerate the
 projection; `--check` refuses to let them drift.
 
 ```bash
-nbb tools/gen-embedded.cljs           # after editing the EDN
-nbb tools/gen-embedded.cljs --check   # gate: exit 1 stale, 2 cannot tell
+nbb tools/gen-embedded.cljk           # after editing the EDN
+nbb tools/gen-embedded.cljk --check   # gate: exit 1 stale, 2 cannot tell
 ```
 
 One thing did NOT become portable, deliberately: the live host-import surface.
@@ -78,8 +78,8 @@ read. Linguist requires a syntax grammar before GitHub can display Kotoba as a
 language at all; `script/add-grammar` points at this repository.
 
 ```bash
-nbb tools/gen-tmlanguage.cljs           # after editing the EDN
-nbb tools/gen-tmlanguage.cljs --check   # gate: exit 1 stale, 2 cannot tell
+nbb tools/gen-tmlanguage.cljk           # after editing the EDN
+nbb tools/gen-tmlanguage.cljk --check   # gate: exit 1 stale, 2 cannot tell
 ```
 
 It exists instead of aliasing `source.clojure` because Kotoba is Clojure-shaped
@@ -91,14 +91,14 @@ and the compiler fails closed on every one. This grammar scopes them
 before it shows up in a build.
 
 `the-textmate-grammar-covers-every-forbidden-head` in the suite gates that
-against the EDN with no dependencies. For a deeper check, `tools/verify-tmlanguage.cljs`
+against the EDN with no dependencies. For a deeper check, `tools/verify-tmlanguage.cljk`
 tokenizes real `.kotoba` source through the same engine VS Code and Linguist
 use, and is a tool rather than a test so the library keeps its dependency-free
 suite:
 
 ```bash
 npm i --no-save vscode-textmate vscode-oniguruma
-nbb tools/verify-tmlanguage.cljs path/to/*.kotoba
+nbb tools/verify-tmlanguage.cljk path/to/*.kotoba
 ```
 
 It earns the separation. An early generator escaped `-` and `/` as if they were
@@ -116,8 +116,8 @@ highlighted as admitted sugar: it names checked KIR by CID through the
 `:code/eval` ability and never means host evaluation.
 
 ```bash
-nbb tools/gen-vscode-grammar.cljs           # project the grammar into it
-nbb tools/gen-vscode-grammar.cljs --check   # gate: 1 stale/disagrees, 2 cannot tell
+nbb tools/gen-vscode-grammar.cljk           # project the grammar into it
+nbb tools/gen-vscode-grammar.cljk --check   # gate: 1 stale/disagrees, 2 cannot tell
 ```
 
 `--check` gates three things, and only the first is a copy: the grammar copy,
@@ -144,8 +144,8 @@ language owner's accounts out with `-user:` before assessing. For a language
 whose sources all live in its own org, that filter is the whole story.
 
 ```bash
-nbb tools/linguist-readiness.cljs                     # prints the queries; exits 3
-nbb tools/linguist-readiness.cljs --raw 58 --assessed 0
+nbb tools/linguist-readiness.cljk                     # prints the queries; exits 3
+nbb tools/linguist-readiness.cljk --raw 58 --assessed 0
 ```
 
 **Measured 2026-08-26: raw 58, owner-excluded 0, threshold 2000.**
@@ -211,10 +211,10 @@ clojure -M:test                       # JVM
 
 # nbb has no dependency resolution, so name the pinned git dep explicitly
 CC=~/.gitlibs/libs/io.github.kotoba-lang/kotoba-core-contracts/<sha>/src
-nbb --classpath "src:test:$CC" test/run_portable.cljs
+nbb --classpath "src:test:$CC" test/run_portable.cljk
 
 # prove the suite can fail — run the table under both runtimes
-nbb tools/check-mutations.cljs
-nbb tools/mutate.cljs
-MUTATE_CMD="nbb --classpath src:test:$CC test/run_portable.cljs" nbb tools/mutate.cljs
+nbb tools/check-mutations.cljk
+nbb tools/mutate.cljk
+MUTATE_CMD="nbb --classpath src:test:$CC test/run_portable.cljk" nbb tools/mutate.cljk
 ```

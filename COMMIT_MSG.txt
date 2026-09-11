@@ -3,7 +3,7 @@ grammar: sync guest-grammar.edn to authority (fs-browse-dir head, e333abac -> ne
 Vendored-copies resync: the on-disk copy of lang/guest-grammar.edn is
 updated to the authority's fs-browse-dir addition (capability id 261,
 kotoba-lang/find recursive tree-walk), and the committed projection
-(src/kotoba/grammar/embedded.cljc) is regenerated via tools/gen-embedded.cljs
+(src/kotoba/grammar/embedded.cljk) is regenerated via tools/gen-embedded.cljk
 so the embedded catalog matches the on-disk EDN.
 
 The grammar sha256 moves e333abac -> ee7ea37c. The paired kotoba-lang,

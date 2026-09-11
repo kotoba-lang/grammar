@@ -3,7 +3,7 @@
 ;; that named tokens carry named scopes.
 ;;
 ;;   npm i --no-save vscode-textmate vscode-oniguruma
-;;   nbb tools/verify-tmlanguage.cljs <sample.kotoba> [...]
+;;   nbb tools/verify-tmlanguage.cljk <sample.kotoba> [...]
 ;;
 ;; ## Why this is a tool and not a test
 ;;
@@ -29,7 +29,7 @@
 (def grammar-path "syntaxes/kotoba.tmLanguage.json")
 
 (when (empty? args)
-  (println "usage: nbb tools/verify-tmlanguage.cljs <sample.kotoba> [...]")
+  (println "usage: nbb tools/verify-tmlanguage.cljk <sample.kotoba> [...]")
   (set! (.-exitCode js/process) 2))
 
 ;; [source-line token required-scope-prefix why]
@@ -130,7 +130,7 @@
 
 (when (seq args)
   (if-not (fs/existsSync grammar-path)
-    (cannot-tell (str grammar-path " does not exist — run: nbb tools/gen-tmlanguage.cljs"))
+    (cannot-tell (str grammar-path " does not exist — run: nbb tools/gen-tmlanguage.cljk"))
     ;; `js/import` throws synchronously under nbb when the package is absent,
     ;; so it has to run INSIDE a promise callback for the throw to become a
     ;; rejection the `.catch` below can turn into "cannot tell".

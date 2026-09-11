@@ -2,13 +2,13 @@
 ;; Generate `syntaxes/kotoba.tmLanguage.json` from
 ;; `resources/kotoba/lang/guest-grammar.edn`.
 ;;
-;;   nbb tools/gen-tmlanguage.cljs           # write
-;;   nbb tools/gen-tmlanguage.cljs --check   # exit 1 if stale, 2 if it cannot tell
+;;   nbb tools/gen-tmlanguage.cljk           # write
+;;   nbb tools/gen-tmlanguage.cljk --check   # exit 1 if stale, 2 if it cannot tell
 ;;
 ;; ## Why a TextMate grammar lives in this repo
 ;;
 ;; This repo already owns the admissible source surface and one generated
-;; projection of it (`src/kotoba/grammar/embedded.cljc`). A TextMate grammar is
+;; projection of it (`src/kotoba/grammar/embedded.cljk`). A TextMate grammar is
 ;; a second projection of the same catalog into a different consumer's format:
 ;; editors, and github-linguist, which requires a grammar before GitHub can
 ;; display Kotoba as a language at all.
@@ -102,7 +102,7 @@
               (let [current (when (fs/existsSync out-path) (fs/readFileSync out-path "utf8"))]
                 (if (= current json)
                   (println (str "FRESH " out-path))
-                  (do (println (str "STALE " out-path " — regenerate: nbb tools/gen-tmlanguage.cljs"))
+                  (do (println (str "STALE " out-path " — regenerate: nbb tools/gen-tmlanguage.cljk"))
                       (set! (.-exitCode js/process) 1))))
               (do (fs/writeFileSync out-path json)
                   (println (str "wrote " out-path))
