@@ -1,5 +1,5 @@
 (ns grammar-test
-  (:require [clojure.test :refer [deftest is testing]]
+  (:require [kotoba.test :refer [deftest is testing]]
             #?(:clj [clojure.edn :as edn])
             [kotoba.lang.text :as str]
             [kotoba.grammar :as grammar]
