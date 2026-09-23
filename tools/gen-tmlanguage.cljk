@@ -27,7 +27,7 @@
 ;; highlighter that describes Kotoba and one that describes Clojure.
 
 (require '["node:fs" :as fs]
-         '[clojure.edn :as edn]
+         '[kotoba.lang.edn :as edn]
          '[kotoba.lang.text :as str]
          '[kotoba.grammar.highlight :as highlight])
 
