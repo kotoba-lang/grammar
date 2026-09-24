@@ -5,11 +5,11 @@
       "deliver": "local",
       "enabled": true,
       "id": "highlight-gate",
-      "model": "qwen3.8-27b-whitehacker",
+      "model": "murakumo/free",
       "name": "syntax-highlight-gate",
       "no_agent": false,
       "prompt": "syntax profile: Kotoba highlighting health gate。scripts/highlight_gate.sh の表面別結果を報告。MISS/FAIL のあった表面は最小 repro と修正案 (grammar repo の generator 再実行 / tokenizer 組み込み PR / linguist PR) を示し、次の 1 アクションを出す。GENERATED ファイルの手編集はしない。",
-      "provider": "kotoba",
+      "provider": "murakumo",
       "schedule": {
         "kind": "cron",
         "expr": "5 19 * * *",
