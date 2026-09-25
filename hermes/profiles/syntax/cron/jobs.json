@@ -17,7 +17,8 @@
       },
       "script": "highlight_gate.sh",
       "skill": null,
-      "skills": []
+      "skills": [],
+      "workdir": null
     }
   ]
 }
